@@ -11,6 +11,8 @@ import { TabsPage } from './pages/tabs/tabs';
 import { TutorialPage } from './pages/tutorial/tutorial';
 import { UserData } from './providers/user-data';
 
+import * as firebase from 'firebase';
+
 interface PageObj {
   title: string;
   component: any;
@@ -54,6 +56,13 @@ class ConferenceApp {
   ) {
     // Call any initial plugins when ready
     platform.ready().then(() => {
+      console.time('signInAnonymously');
+      firebase.auth().signInAnonymously().then(user => {
+        console.timeEnd('signInAnonymously');
+        console.log('uid=' + user.uid);
+      }).catch(err => {
+        console.log('signInAnonymously error:' + JSON.stringify(err));
+      });
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
@@ -117,5 +126,16 @@ class ConferenceApp {
 // Place the tabs on the bottom for all platforms
 // See the theming docs for the default values:
 // http://ionicframework.com/docs/v2/theming/platform-specific-styles/
+
+
+  // Initialize Firebase
+  var config = {
+    apiKey: "<API_KEY>",
+    authDomain: "<PROJECT_ID>.firebaseapp.com",
+    databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
+    storageBucket: "<BUCKET>.appspot.com",
+    messagingSenderId: "<SENDERID>"
+  };
+  firebase.initializeApp(config);
 
 ionicBootstrap(ConferenceApp, [ConferenceData, UserData], { });

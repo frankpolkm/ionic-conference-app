@@ -10,7 +10,7 @@ var gulp = require('gulp'),
  * tasks before or after the command.
  */
 gulp.task('serve:before', ['watch']);
-gulp.task('emulate:before', ['build']);
+gulp.task('emulate:before', ['watch', 'build']);
 gulp.task('deploy:before', ['build']);
 gulp.task('build:before', ['build']);
 
